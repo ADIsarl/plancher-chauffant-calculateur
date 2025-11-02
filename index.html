@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADI - Calculateur de Plancher Chauffant Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4a7ba7 0%, #6998bd 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e4d8b 0%, #2a5ea5 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-container {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            height: 60px;
+        }
+
+        .logo-text {
+            font-size: 2em;
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: 3px;
+        }
+
+        .logo-text .letter-a {
+            color: #1e4d8b;
+        }
+
+        .logo-text .letter-d {
+            color: #dc3545;
+        }
+
+        .logo-text .letter-i {
+            color: #00a8e8;
+        }
+
+        .logo-subtitle {
+            font-size: 0.5em;
+            letter-spacing: 1px;
+            color: #333;
+            font-weight: normal;
+            font-style: normal;
+            margin-top: 2px;
+        }
+
+        .header-title {
+            flex: 1;
+        }
+
+        .header-title h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .header-title p {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+
+        .project-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .project-controls button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .project-controls button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+
+        .client-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 30px;
+            color: white;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .client-inputs {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .client-inputs label {
+            font-weight: 500;
+        }
+
+        .client-inputs input {
+            background: rgba(255,255,255,0.95);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 180px;
+        }
+
+        .main-header {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .params-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .param-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .param-group label {
+            color: #495057;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .param-group input, .param-group select {
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+
+        .param-group .help-text {
+            font-size: 0.75em;
+            color: #6c757d;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a5ea5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #495057;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #2a5ea5;
+            box-shadow: 0 0 0 3px rgba(42, 94, 165, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #2a5ea5 0%, #1e4d8b 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 94, 165, 0.4);
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-calculate {
+            background: linear-gradient(135deg, #dc3545 0%, #c0392b 100%);
+            font-size: 1.2em;
+            padding: 15px 30px;
+            width: 100%;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .btn-import {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        .level-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .level-tab {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .level-tab.active {
+            background: linear-gradient(135deg, #2a5ea5 0%, #1e4d8b 100%);
+            color: white;
+            border-color: #2a5ea5;
+        }
+
+        .room-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .room-item {
+            background: #f8f9fa;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .room-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .room-info {
+            flex: 1;
+        }
+
+        .room-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 3px;
+        }
+
+        .room-details {
+            color: #7f8c8d;
+            font-size: 0.85em;
+        }
+
+        .btn-remove {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 0.85em;
+        }
+
+        .btn-remove:hover {
+            background: #c0392b;
+        }
+
+        .results-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .result-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .level-results {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a5ea5;
+        }
+
+        .level-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .nourrice-info {
+            background: #e3f2fd;
+            padding: 8px 15px;
+            border-radius: 8px;
+            color: #1565c0;
+            font-weight: 500;
+            border: 1px solid #90caf9;
+        }
+
+        .circuit-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .circuit-table th {
+            background: #1e4d8b;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .circuit-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 0.9em;
+        }
+
+        .circuit-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .crown-section {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .crown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .crown-item {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .crown-value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .crown-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #28a745;
+            color: #155724;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            gap: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .saved-projects {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 400px;
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .saved-projects.show {
+            display: block;
+        }
+
+        .saved-projects select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255,255,255,0.95);
+            margin-bottom: 10px;
+        }
+
+        .saved-projects button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .import-file {
+            display: none;
+        }
+
+        /* Scrollbar personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-container">
+                    <div>
+                        <div class="logo-text">
+                            <span class="letter-a">A</span>•<span class="letter-d">D</span>•<span class="letter-i">I</span>
+                        </div>
+                        <div class="logo-subtitle">Assistance Dépannage Installation</div>
+                    </div>
+                </div>
+                <div class="header-title">
+                    <h1>Calculateur de Plancher Chauffant Pro</h1>
+                    <p>Version 3.0 - Étude complète avec sauvegarde avancée</p>
+                </div>
+            </div>
+
+            <div class="project-controls" style="position: relative;">
+                <button onclick="saveProject()">💾 Sauvegarder</button>
+                <button onclick="exportToJSON()">📥 Export JSON</button>
+                <button onclick="document.getElementById('importFile').click()">📤 Import JSON</button>
+                <input type="file" id="importFile" class="import-file" accept=".json" onchange="importFromJSON(event)">
+                <button onclick="toggleSavedProjects()">📁 Projets locaux</button>
+                <button onclick="newProject()">📄 Nouveau</button>
+                
+                <div class="saved-projects" id="savedProjectsDiv">
+                    <select id="savedProjectsList" size="8" onchange="loadSelectedProject()">
+                        <option value="">-- Choisir un projet --</option>
+                    </select>
+                    <button onclick="deleteSelectedProject()">🗑️ Supprimer</button>
+                    <button onclick="toggleSavedProjects()" style="background: #6c757d;">✕ Fermer</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="client-section">
+            <div class="client-inputs">
+                <label>Client :</label>
+                <input type="text" id="clientName" placeholder="Nom">
+                <input type="text" id="clientFirstName" placeholder="Prénom">
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="params-section">
+                <div class="param-group">
+                    <label>Surface totale (m²)</label>
+                    <input type="number" id="totalArea" placeholder="Ex: 150" step="0.1">
+                </div>
+                <div class="param-group">
+                    <label>Déperdition totale (W)</label>
+                    <input type="number" id="totalLoss" placeholder="Ex: 8000" step="10">
+                </div>
+                <div class="param-group">
+                    <label>Pas de pose (cm)</label>
+                    <select id="spacing">
+                        <option value="10">10 cm - Zones froides</option>
+                        <option value="15" selected>15 cm - Standard</option>
+                        <option value="20">20 cm - Tempéré</option>
+                        <option value="25">25 cm - Faible</option>
+                    </select>
+                </div>
+                <div class="param-group">
+                    <label>Marge d'erreur (%)</label>
+                    <input type="number" id="margin" value="5" min="5" max="25" step="1">
+                    <span class="help-text">Raccordements et courbes</span>
+                </div>
+                <div class="param-group">
+                    <label>ΔT (°C)</label>
+                    <input type="number" id="deltaT" value="5" min="5" max="10" step="1">
+                    <span class="help-text">Écart départ/retour</span>
+                </div>
+                <div class="param-group" style="align-self: center;">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="corridorHeating" checked>
+                        <label for="corridorHeating">Couloirs par passage</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="card">
+                    <h2>🏠 Gestion des Pièces</h2>
+                    
+                    <div class="level-tabs" id="levelTabs">
+                        <div class="level-tab active" data-level="0" onclick="selectLevel(0)">RDC</div>
+                    </div>
+                    <button class="btn btn-add" onclick="addLevel()" style="margin-bottom: 15px;">➕ Ajouter un étage</button>
+
+                    <div class="form-group">
+                        <label>Nom de la pièce</label>
+                        <input type="text" id="roomName" placeholder="Ex: Salon">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Surface (m²)</label>
+                        <input type="number" id="roomArea" placeholder="Ex: 25" step="0.1">
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="isCorridor">
+                        <label for="isCorridor">C'est un couloir/circulation</label>
+                    </div>
+
+                    <button class="btn btn-add" onclick="addRoom()">➕ Ajouter la pièce</button>
+
+                    <div class="room-list" id="roomsList"></div>
+                </div>
+
+                <button class="btn btn-calculate" onclick="calculateAll()">🔄 CALCULER</button>
+            </div>
+
+            <div class="results-area">
+                <div class="card">
+                    <h2>📊 Résultats de l'Étude</h2>
+                    <button class="btn btn-export" onclick="exportPDF()">📥 Exporter PDF</button>
+                    <div id="results" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Structure de données améliorée
+        let data = {
+            client: {
+                name: '',
+                firstName: ''
+            },
+            levels: {
+                0: { name: 'RDC', rooms: [] }
+            },
+            currentLevel: 0,
+            globalParams: {}
+        };
+
+        // Gestion du stockage local (15 projets max)
+        const STORAGE_KEY = 'plancherChauffantProjects';
+        const MAX_PROJECTS = 15;
+
+        // Charger les projets sauvegardés au démarrage
+        function loadProjectsFromStorage() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : {};
+        }
+
+        // Sauvegarder un projet
+        function saveProject() {
+            const clientName = document.getElementById('clientName').value;
+            const clientFirstName = document.getElementById('clientFirstName').value;
+            
+            if (!clientName || !clientFirstName) {
+                alert('Veuillez renseigner le nom et prénom du client');
+                return;
+            }
+
+            // Collecter toutes les données
+            const projectData = collectProjectData();
+
+            // Créer un nom unique pour le projet
+            const date = new Date();
+            const dateStr = date.toISOString().slice(2,10).replace(/-/g, '');
+            const timeStr = date.toTimeString().slice(0,5).replace(':', 'h');
+            const projectName = `${clientName} ${clientFirstName} - ${dateStr} ${timeStr}`;
+
+            // Sauvegarder dans localStorage
+            const projects = loadProjectsFromStorage();
+            projects[projectName] = projectData;
+            
+            // Limiter au nombre maximum de projets
+            const projectKeys = Object.keys(projects);
+            if (projectKeys.length > MAX_PROJECTS) {
+                // Supprimer les plus anciens
+                const toDelete = projectKeys.sort((a, b) => 
+                    projects[a].savedDate.localeCompare(projects[b].savedDate)
+                ).slice(0, projectKeys.length - MAX_PROJECTS);
+                toDelete.forEach(key => delete projects[key]);
+            }
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+            alert(`✅ Projet "${projectName}" sauvegardé !`);
+            updateSavedProjectsList();
+        }
+
+        // Collecter les données du projet
+        function collectProjectData() {
+            return {
+                client: {
+                    name: document.getElementById('clientName').value,
+                    firstName: document.getElementById('clientFirstName').value
+                },
+                params: {
+                    totalArea: document.getElementById('totalArea').value,
+                    totalLoss: document.getElementById('totalLoss').value,
+                    spacing: document.getElementById('spacing').value,
+                    margin: document.getElementById('margin').value,
+                    deltaT: document.getElementById('deltaT').value,
+                    corridorHeating: document.getElementById('corridorHeating').checked
+                },
+                levels: data.levels,
+                savedDate: new Date().toISOString()
+            };
+        }
+
+        // Export vers JSON
+        function exportToJSON() {
+            const clientName = document.getElementById('clientName').value || 'projet';
+            const clientFirstName = document.getElementById('clientFirstName').value || '';
+            const date = new Date().toISOString().slice(0,10);
+            
+            const projectData = collectProjectData();
+            const dataStr = JSON.stringify(projectData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `plancher_chauffant_${clientName}_${clientFirstName}_${date}.json`;
+            link.click();
+        }
+
+        // Import depuis JSON
+        function importFromJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const projectData = JSON.parse(e.target.result);
+                    loadProjectData(projectData);
+                    alert('✅ Projet importé avec succès !');
+                } catch (error) {
+                    alert('❌ Erreur lors de l\'import du fichier');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Charger les données d'un projet
+        function loadProjectData(project) {
+            // Restaurer les données client
+            document.getElementById('clientName').value = project.client.name || '';
+            document.getElementById('clientFirstName').value = project.client.firstName || '';
+            
+            // Restaurer les paramètres
+            document.getElementById('totalArea').value = project.params.totalArea || '';
+            document.getElementById('totalLoss').value = project.params.totalLoss || '';
+            document.getElementById('spacing').value = project.params.spacing || '15';
+            document.getElementById('margin').value = project.params.margin || '5';
+            document.getElementById('deltaT').value = project.params.deltaT || '5';
+            document.getElementById('corridorHeating').checked = project.params.corridorHeating !== false;
+            
+            // Restaurer les niveaux et pièces
+            data.levels = project.levels || { 0: { name: 'RDC', rooms: [] } };
+            data.currentLevel = 0;
+            
+            // Mettre à jour l'interface
+            updateLevelTabs();
+            updateRoomsList();
+        }
+
+        // Afficher/masquer les projets sauvegardés
+        function toggleSavedProjects() {
+            const div = document.getElementById('savedProjectsDiv');
+            div.classList.toggle('show');
+            if (div.classList.contains('show')) {
+                updateSavedProjectsList();
+            }
+        }
+
+        // Mettre à jour la liste des projets
+        function updateSavedProjectsList() {
+            const select = document.getElementById('savedProjectsList');
+            const projects = loadProjectsFromStorage();
+            
+            select.innerHTML = '<option value="">-- Choisir un projet --</option>';
+            
+            // Trier par date décroissante
+            const sortedProjects = Object.keys(projects).sort((a, b) => 
+                projects[b].savedDate.localeCompare(projects[a].savedDate)
+            );
+            
+            sortedProjects.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                select.appendChild(option);
+            });
+        }
+
+        // Charger un projet sélectionné
+        function loadSelectedProject() {
+            const select = document.getElementById('savedProjectsList');
+            const projectName = select.value;
+            
+            if (!projectName) return;
+            
+            const projects = loadProjectsFromStorage();
+            const project = projects[projectName];
+            
+            if (project) {
+                loadProjectData(project);
+                alert(`✅ Projet "${projectName}" chargé !`);
+                toggleSavedProjects();
+            }
+        }
+
+        // Supprimer un projet
+        function deleteSelectedProject() {
+            const select = document.getElementById('savedProjectsList');
+            const projectName = select.value;
+            
+            if (!projectName) {
+                alert('Veuillez sélectionner un projet');
+                return;
+            }
+            
+            if (confirm(`Êtes-vous sûr de vouloir supprimer le projet "${projectName}" ?`)) {
+                const projects = loadProjectsFromStorage();
+                delete projects[projectName];
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+                updateSavedProjectsList();
+                alert(`✅ Projet supprimé`);
+            }
+        }
+
+        // Nouveau projet
+        function newProject() {
+            if (confirm('Créer un nouveau projet ? Les données non sauvegardées seront perdues.')) {
+                // Réinitialiser tout
+                document.getElementById('clientName').value = '';
+                document.getElementById('clientFirstName').value = '';
+                document.getElementById('totalArea').value = '';
+                document.getElementById('totalLoss').value = '';
+                document.getElementById('spacing').value = '15';
+                document.getElementById('margin').value = '5';
+                document.getElementById('deltaT').value = '5';
+                document.getElementById('corridorHeating').checked = true;
+                
+                data.levels = { 0: { name: 'RDC', rooms: [] } };
+                data.currentLevel = 0;
+                
+                updateLevelTabs();
+                updateRoomsList();
+                document.getElementById('results').innerHTML = '';
+            }
+        }
+
+        // Ajouter un niveau
+        function addLevel() {
+            const levelCount = Object.keys(data.levels).length;
+            const levelName = prompt(`Nom du niveau ${levelCount + 1}:`, `Étage ${levelCount}`);
+            if (levelName) {
+                data.levels[levelCount] = { name: levelName, rooms: [] };
+                updateLevelTabs();
+                selectLevel(levelCount);
+            }
+        }
+
+        // Mettre à jour les onglets de niveaux
+        function updateLevelTabs() {
+            const tabs = document.getElementById('levelTabs');
+            tabs.innerHTML = '';
+            
+            Object.keys(data.levels).forEach(level => {
+                const tab = document.createElement('div');
+                tab.className = 'level-tab';
+                if (parseInt(level) === data.currentLevel) {
+                    tab.classList.add('active');
+                }
+                tab.dataset.level = level;
+                tab.textContent = data.levels[level].name;
+                tab.onclick = () => selectLevel(parseInt(level));
+                tabs.appendChild(tab);
+            });
+        }
+
+        // Sélectionner un niveau
+        function selectLevel(level) {
+            data.currentLevel = level;
+            document.querySelectorAll('.level-tab').forEach(tab => {
+                tab.classList.toggle('active', parseInt(tab.dataset.level) === level);
+            });
+            updateRoomsList();
+        }
+
+        // Ajouter une pièce
+        function addRoom() {
+            const name = document.getElementById('roomName').value;
+            const area = parseFloat(document.getElementById('roomArea').value);
+            const isCorridor = document.getElementById('isCorridor').checked;
+
+            if (!name || !area) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+
+            const room = {
+                id: Date.now(),
+                name: name,
+                area: area,
+                isCorridor: isCorridor,
+                level: data.currentLevel
+            };
+
+            data.levels[data.currentLevel].rooms.push(room);
+            
+            document.getElementById('roomName').value = '';
+            document.getElementById('roomArea').value = '';
+            document.getElementById('isCorridor').checked = false;
+            
+            updateRoomsList();
+        }
+
+        // Mettre à jour la liste des pièces
+        function updateRoomsList() {
+            const list = document.getElementById('roomsList');
+            const rooms = data.levels[data.currentLevel].rooms;
+            
+            if (rooms.length === 0) {
+                list.innerHTML = '<p style="color: #6c757d; text-align: center;">Aucune pièce ajoutée</p>';
+                return;
+            }
+
+            list.innerHTML = '';
+            rooms.forEach(room => {
+                const item = document.createElement('div');
+                item.className = 'room-item';
+                
+                const info = document.createElement('div');
+                info.className = 'room-info';
+                
+                const name = document.createElement('div');
+                name.className = 'room-name';
+                name.textContent = room.name + (room.isCorridor ? ' 🚶' : '');
+                
+                const details = document.createElement('div');
+                details.className = 'room-details';
+                details.textContent = `${room.area} m²`;
+                
+                info.appendChild(name);
+                info.appendChild(details);
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'btn-remove';
+                removeBtn.textContent = '✕';
+                removeBtn.onclick = () => removeRoom(room.id);
+                
+                item.appendChild(info);
+                item.appendChild(removeBtn);
+                list.appendChild(item);
+            });
+        }
+
+        // Supprimer une pièce
+        function removeRoom(id) {
+            data.levels[data.currentLevel].rooms = data.levels[data.currentLevel].rooms.filter(r => r.id !== id);
+            updateRoomsList();
+        }
+
+        // Calcul de la longueur de tube
+        function calculateTubeLength(area, spacing, margin, isCorridor, corridorHeating) {
+            if (isCorridor && corridorHeating) {
+                return 0;
+            }
+            const spacingM = spacing / 100;
+            const baseLength = area / spacingM;
+            const marginFactor = 1 + (margin / 100);
+            return baseLength * marginFactor;
+        }
+
+        // Équilibrage des boucles
+        function balanceCircuits(tubeLength, maxCircuitLength = 120) {
+            if (tubeLength <= maxCircuitLength) {
+                return [tubeLength];
+            }
+            const numCircuits = Math.ceil(tubeLength / maxCircuitLength);
+            const targetLength = tubeLength / numCircuits;
+            const circuits = [];
+            for (let i = 0; i < numCircuits; i++) {
+                circuits.push(targetLength);
+            }
+            return circuits;
+        }
+
+        // Calcul du débit
+        function calculateFlowRate(power, deltaT) {
+            const c = 4186;
+            const flowKgS = power / (c * deltaT);
+            const flowLMin = flowKgS * 60;
+            return flowLMin;
+        }
+
+        // Calcul des couronnes
+        function calculateCrowns(totalLength) {
+            const crown240 = 240;
+            const crown120 = 120;
+            
+            let remaining = totalLength;
+            let count240 = Math.floor(remaining / crown240);
+            remaining = remaining % crown240;
+            
+            let count120 = 0;
+            if (remaining > crown120) {
+                count240++;
+                remaining = 0;
+            } else if (remaining > 0) {
+                count120 = 1;
+            }
+            
+            return {
+                crown240: count240,
+                crown120: count120,
+                totalCrowns: count240 + count120,
+                waste: (count240 * crown240 + count120 * crown120) - totalLength
+            };
+        }
+
+        // Calcul principal
+        function calculateAll() {
+            const totalArea = parseFloat(document.getElementById('totalArea').value);
+            const totalLoss = parseFloat(document.getElementById('totalLoss').value);
+            const spacing = parseFloat(document.getElementById('spacing').value);
+            const margin = parseFloat(document.getElementById('margin').value);
+            const deltaT = parseFloat(document.getElementById('deltaT').value);
+            const corridorHeating = document.getElementById('corridorHeating').checked;
+
+            if (!totalArea || !totalLoss) {
+                alert('Veuillez renseigner la surface totale et la déperdition totale');
+                return;
+            }
+
+            let results = {
+                levels: {},
+                totalTubeLength: 0,
+                totalActiveArea: 0,
+                totalCircuits: 0,
+                totalFlowRate: 0,
+                crowns: {},
+                warnings: [],
+                errors: []
+            };
+
+            let allCircuits = [];
+
+            Object.keys(data.levels).forEach(levelKey => {
+                const level = data.levels[levelKey];
+                let levelResults = {
+                    name: level.name,
+                    rooms: [],
+                    totalTubeLength: 0,
+                    totalArea: 0,
+                    totalActiveArea: 0,
+                    circuits: [],
+                    nouriceSorties: 0
+                };
+
+                level.rooms.forEach(room => {
+                    const tubeLength = calculateTubeLength(room.area, spacing, margin, room.isCorridor, corridorHeating);
+                    
+                    const roomResult = {
+                        name: room.name,
+                        area: room.area,
+                        isCorridor: room.isCorridor,
+                        tubeLength: tubeLength,
+                        circuits: []
+                    };
+
+                    levelResults.totalArea += room.area;
+                    if (!room.isCorridor || !corridorHeating) {
+                        levelResults.totalActiveArea += room.area;
+                    }
+
+                    if (tubeLength > 0) {
+                        const circuitLengths = balanceCircuits(tubeLength, 120);
+                        const roomPowerPerM2 = totalLoss / totalArea;
+                        const roomTotalPower = room.area * roomPowerPerM2;
+                        
+                        circuitLengths.forEach((circuitLength, index) => {
+                            const circuitPower = roomTotalPower * (circuitLength / tubeLength);
+                            const circuitFlow = calculateFlowRate(circuitPower, deltaT);
+
+                            const circuit = {
+                                id: `${room.name}-C${index + 1}`,
+                                length: circuitLength,
+                                power: circuitPower,
+                                flowRate: circuitFlow
+                            };
+
+                            roomResult.circuits.push(circuit);
+                            levelResults.circuits.push(circuit);
+                            allCircuits.push(circuit);
+                        });
+
+                        if (circuitLengths.length > 1) {
+                            results.warnings.push(`⚠️ "${room.name}" : ${circuitLengths.length} circuits de ${circuitLengths[0].toFixed(0)}m`);
+                        }
+                    }
+
+                    levelResults.totalTubeLength += tubeLength;
+                    levelResults.rooms.push(roomResult);
+                });
+
+                levelResults.nouriceSorties = levelResults.circuits.length;
+                results.levels[levelKey] = levelResults;
+                results.totalTubeLength += levelResults.totalTubeLength;
+                results.totalActiveArea += levelResults.totalActiveArea;
+                results.totalCircuits += levelResults.circuits.length;
+            });
+
+            results.totalFlowRate = allCircuits.reduce((sum, circuit) => sum + circuit.flowRate, 0);
+            results.crowns = calculateCrowns(results.totalTubeLength);
+
+            const totalRoomArea = Object.values(data.levels).reduce((sum, level) => 
+                sum + level.rooms.reduce((s, r) => s + r.area, 0), 0);
+
+            if (Math.abs(totalRoomArea - totalArea) > 0.1) {
+                results.warnings.push(`⚠️ Surface pièces (${totalRoomArea.toFixed(1)} m²) ≠ Surface totale (${totalArea} m²)`);
+            }
+
+            const coverageRatio = (results.totalActiveArea / totalArea) * 100;
+            if (coverageRatio < 80) {
+                results.warnings.push(`⚠️ Couverture: ${coverageRatio.toFixed(1)}% (recommandé > 80%)`);
+            }
+
+            displayResults(results);
+        }
+
+        // Affichage des résultats
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('results');
+            let html = '';
+
+            // Résumé global
+            html += '<div class="result-summary">';
+            html += `<div class="stat-card">
+                        <div class="stat-value">${results.totalTubeLength.toFixed(0)} m</div>
+                        <div class="stat-label">Tube Total</div>
+                     </div>`;
+            html += `<div class="stat-card">
+                        <div class="stat-value">${results.totalCircuits}</div>
+                        <div class="stat-label">Circuits</div>
+                     </div>`;
+            html += `<div class="stat-card">
+                        <div class="stat-value">${results.totalFlowRate.toFixed(1)} l/min</div>
+                        <div class="stat-label">Débit Total</div>
+                     </div>`;
+            html += `<div class="stat-card">
+                        <div class="stat-value">${Object.keys(results.levels).length}</div>
+                        <div class="stat-label">Nourices</div>
+                     </div>`;
+            html += '</div>';
+
+            // Section couronnes
+            html += '<div class="crown-section">';
+            html += '<h3>📦 Besoins en Couronnes (Tube BAO 16x1.5)</h3>';
+            html += '<div class="crown-grid">';
+            html += `<div class="crown-item">
+                        <div class="crown-value">${results.crowns.crown240}</div>
+                        <div class="crown-label">240m (A2KXW)</div>
+                     </div>`;
+            html += `<div class="crown-item">
+                        <div class="crown-value">${results.crowns.crown120}</div>
+                        <div class="crown-label">120m (436LK)</div>
+                     </div>`;
+            if (results.crowns.waste > 0) {
+                html += `<div class="crown-item">
+                            <div class="crown-value">${results.crowns.waste.toFixed(0)} m</div>
+                            <div class="crown-label">Chute</div>
+                         </div>`;
+            }
+            html += '</div></div>';
+
+            // Détails par niveau avec nourice
+            Object.keys(results.levels).forEach(levelKey => {
+                const level = results.levels[levelKey];
+                html += '<div class="level-results">';
+                html += '<div class="level-header">';
+                html += `<div class="level-title">📍 ${level.name} - ${level.totalArea.toFixed(1)} m²</div>`;
+                html += `<div class="nourrice-info">🔧 Nourice ${level.name}: ${level.nouriceSorties} sorties</div>`;
+                html += '</div>';
+
+                if (level.circuits.length > 0) {
+                    html += '<table class="circuit-table">';
+                    html += '<thead><tr>';
+                    html += '<th>Circuit</th>';
+                    html += '<th>Pièce</th>';
+                    html += '<th>Long. (m)</th>';
+                    html += '<th>Débit (l/min)</th>';
+                    html += '<th>Puiss. (W)</th>';
+                    html += '</tr></thead>';
+                    html += '<tbody>';
+                    
+                    level.circuits.forEach((circuit, index) => {
+                        const roomName = circuit.id.split('-C')[0];
+                        html += `<tr>
+                                    <td>${index + 1}</td>
+                                    <td>${roomName}</td>
+                                    <td>${circuit.length.toFixed(0)}</td>
+                                    <td>${circuit.flowRate.toFixed(2)}</td>
+                                    <td>${circuit.power.toFixed(0)}</td>
+                                 </tr>`;
+                    });
+                    
+                    html += '</tbody></table>';
+                }
+
+                // Pièces chauffées par passage
+                const corridors = level.rooms.filter(r => r.isCorridor && r.tubeLength === 0);
+                if (corridors.length > 0) {
+                    html += '<div style="margin-top: 10px; color: #7f8c8d; font-size: 0.9em;">';
+                    html += '🚶 Couloirs chauffés par passage : ';
+                    html += corridors.map(c => `${c.name} (${c.area} m²)`).join(', ');
+                    html += '</div>';
+                }
+
+                html += '</div>';
+            });
+
+            // Avertissements
+            if (results.warnings.length > 0) {
+                results.warnings.forEach(w => {
+                    html += `<div class="alert alert-warning">${w}</div>`;
+                });
+            }
+
+            // Message de succès
+            if (results.warnings.length === 0 && results.errors.length === 0) {
+                html += '<div class="alert alert-success">✅ Étude validée - Tous les paramètres sont conformes</div>';
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // Export PDF avec logo ADI
+        function exportPDF() {
+            const results = document.getElementById('results').innerHTML;
+            if (!results) {
+                alert('Veuillez d\'abord calculer les résultats');
+                return;
+            }
+
+            const clientName = document.getElementById('clientName').value || 'Client';
+            const clientFirstName = document.getElementById('clientFirstName').value || '';
+            const date = new Date().toLocaleDateString('fr-FR');
+
+            const printWindow = window.open('', '', 'height=800,width=1000');
+            printWindow.document.write('<html><head><title>Étude Plancher Chauffant - ADI</title>');
+            printWindow.document.write('<style>');
+            printWindow.document.write('body { font-family: Arial, sans-serif; padding: 20px; }');
+            printWindow.document.write('.header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #1e4d8b; padding-bottom: 20px; }');
+            printWindow.document.write('.logo { font-size: 3em; font-weight: bold; font-style: italic; letter-spacing: 5px; margin-bottom: 10px; }');
+            printWindow.document.write('.letter-a { color: #1e4d8b; }');
+            printWindow.document.write('.letter-d { color: #dc3545; }');
+            printWindow.document.write('.letter-i { color: #00a8e8; }');
+            printWindow.document.write('.subtitle { font-size: 1.2em; color: #666; margin-bottom: 20px; }');
+            printWindow.document.write('h1 { color: #2c3e50; }');
+            printWindow.document.write('h2 { color: #34495e; margin-top: 20px; }');
+            printWindow.document.write('.client-info { background: #ecf0f1; padding: 15px; margin-bottom: 20px; border-radius: 5px; }');
+            printWindow.document.write('.stat-card { display: inline-block; margin: 10px; padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; }');
+            printWindow.document.write('.circuit-table { width: 100%; border-collapse: collapse; margin: 15px 0; }');
+            printWindow.document.write('.circuit-table th { background: #1e4d8b; color: white; padding: 8px; }');
+            printWindow.document.write('.circuit-table td { border: 1px solid #ddd; padding: 6px; }');
+            printWindow.document.write('.crown-section { background: #e8f5e9; padding: 15px; margin: 20px 0; border-radius: 5px; }');
+            printWindow.document.write('.level-results { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }');
+            printWindow.document.write('.nourrice-info { background: #e3f2fd; padding: 5px 10px; border-radius: 5px; display: inline-block; margin-bottom: 10px; color: #1565c0; }');
+            printWindow.document.write('@media print { body { font-size: 12px; } }');
+            printWindow.document.write('</style></head><body>');
+            
+            printWindow.document.write('<div class="header">');
+            printWindow.document.write('<div class="logo">');
+            printWindow.document.write('<span class="letter-a">A</span>•<span class="letter-d">D</span>•<span class="letter-i">I</span>');
+            printWindow.document.write('</div>');
+            printWindow.document.write('<div class="subtitle">Assistance Dépannage Installation</div>');
+            printWindow.document.write('<h1>ÉTUDE PLANCHER CHAUFFANT</h1>');
+            printWindow.document.write('<p>Document généré le ' + date + '</p>');
+            printWindow.document.write('</div>');
+            
+            printWindow.document.write('<div class="client-info">');
+            printWindow.document.write('<h2>INFORMATIONS CLIENT</h2>');
+            printWindow.document.write(`<p><strong>Nom :</strong> ${clientName} ${clientFirstName}</p>`);
+            printWindow.document.write(`<p><strong>Surface totale :</strong> ${document.getElementById('totalArea').value} m²</p>`);
+            printWindow.document.write(`<p><strong>Déperdition :</strong> ${document.getElementById('totalLoss').value} W</p>`);
+            printWindow.document.write(`<p><strong>Pas de pose :</strong> ${document.getElementById('spacing').value} cm</p>`);
+            printWindow.document.write(`<p><strong>Marge :</strong> ${document.getElementById('margin').value} %</p>`);
+            printWindow.document.write(`<p><strong>ΔT :</strong> ${document.getElementById('deltaT').value} °C</p>`);
+            printWindow.document.write('</div>');
+            
+            printWindow.document.write('<h2>RÉSULTATS DE L\'ÉTUDE</h2>');
+            printWindow.document.write(results);
+            
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Initialisation
+        updateRoomsList();
+        updateSavedProjectsList();
+    </script>
+</body>
+</html>
